@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :foods
   resources :food_entries
   resource :users, only: [:create]
   get "/admin_entries", to: "food_entries#admin"
