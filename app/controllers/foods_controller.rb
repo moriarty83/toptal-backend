@@ -22,7 +22,19 @@ class FoodsController < ApplicationController
   end
   # GET /foods
   def index
-    @foods = Food.where(user_id: @user.id)
+    from = request.headers['from']
+    to = request.headers['to']
+
+    if from != "none" && to != "none"
+      @foods = Food.where(user_id: @user.id, date: from..to)
+    elsif from != "none" && to == "none"
+      @foods = Food.where(user_id: @user.id, date: from..)
+    elsif from == "none" && to != "none"
+      @foods = Food.where(user_id: @user.id, date: ..to)
+    else
+      @foods = Food.where(user_id: @user.id)
+
+    end
       
     render json: @foods
   end
